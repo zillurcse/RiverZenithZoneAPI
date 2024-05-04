@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin;
+
 Route::get('/test', function (Request $request) {
-    return auth()->user();
+    return auth('admin')->user();
 });

@@ -4,11 +4,10 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Route;
-
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         using: function (){
-            Route::middleware(['api', 'auth:sanctum'])
+            Route::middleware(['api'])
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
             Route::middleware(['api', 'auth:admin'])
@@ -26,5 +25,21 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+        $response = new \App\ApiResponseClass();
+        $exceptions->render(function (\Illuminate\Auth\AuthenticationException $exception){
+            return response()->json('hello world!!!');
+        });
+        $exceptions->render(function (\Symfony\Component\Routing\Exception\RouteNotFoundException $exception) use($response){
+            return $response->errorResponse($exception->getMessage());
+        });
+        $exceptions->render(function (\Illuminate\Database\QueryException $exception) use($response){
+            return $response->errorResponse('sql query error!', [$exception->getMessage()], 500);
+        });
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $exception) use($response){
+            return $response->errorResponse('data not found!', [$exception->getMessage()], 404);
+        });
+        $exceptions->render(function (InvalidArgumentException $exception) use($response){
+            return $response->errorResponse('data not found!', [$exception->getMessage()], 404);
+        });
+    })
+    ->create();
