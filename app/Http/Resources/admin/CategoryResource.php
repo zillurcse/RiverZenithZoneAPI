@@ -19,7 +19,8 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'banner_image' => $this->banner_image,
-            'icon_image' => $this->icon_image
+            'icon_image' => $this->icon_image,
+            'children' => CategoryResource::collection($this->children)
         ];
     }
 }

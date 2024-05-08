@@ -96,4 +96,19 @@ class CategoryController extends Controller
             return 'hello';
         }
     }
+
+    /**
+     *show the specified resource from storage.
+     */
+    public function show(Category $category)
+    {
+        try {
+            $category = CategoryResource::make($category);
+            return $this->helper()->response(__('response.fetch_successfully'),$category);
+        }
+        catch (\Exception $exception){
+//            return 'hello';
+        }
+    }
+
 }

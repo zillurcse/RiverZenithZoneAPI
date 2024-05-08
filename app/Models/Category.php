@@ -25,4 +25,12 @@ class Category extends Model implements HasMedia
     public function scopeAdmin(Builder $builder){
         $builder->where('admin_id', admin()->id);
     }
+
+    public function children(){
+        return $this->hasMany(self::class, 'parent_id', 'id');
+    }
+
+    public function parent(){
+        return $this->belongsTo(self::class, 'parent_id', 'id');
+    }
 }

@@ -17,8 +17,11 @@ class CategoryFilterScope implements Scope
             if ($name = request()->name){
                 $builder->where('name->'.app()->getLocale(), 'like', '%'.$name.'%');
             }
-            if ($name = request()->is_main){
-                $builder->whereNull('parent_id', '');
+            if (request()->is_main){
+                $builder->whereNull('parent_id');
+            }
+            if ($parent_id = request()->parent_id){
+                $builder->where('parent_id', $parent_id);
             }
         }
 
