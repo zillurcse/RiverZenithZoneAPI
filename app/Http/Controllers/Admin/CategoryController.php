@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\UniqueException;
+use App\Admin\Message;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\admin\CategoryResource;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
@@ -21,7 +20,7 @@ class CategoryController extends Controller
         $data =  Category::Admin()->paginate(10);
         $data = CategoryResource::collection($data)->resource;
         return $this->helper()->response(
-            __('response.fetch_successfully'),
+            Message::FETCH(),
             $data
         );
     }
@@ -50,7 +49,10 @@ class CategoryController extends Controller
             ]);
         }
         DB::commit();
-        return $this->helper()->response(__('response.created'), CategoryResource::make($category));
+        return $this->helper()->response(
+            Message::CREATED(),
+            CategoryResource::make($category)
+        );
     }
 
     /**
@@ -79,7 +81,10 @@ class CategoryController extends Controller
                 'file' => $image
             ]);
         }
-        return $this->helper()->response(__('response.updated'), CategoryResource::make($category));
+        return $this->helper()->response(
+            Message::UPDATED(),
+            CategoryResource::make($category)
+        );
 
     }
 
@@ -90,7 +95,10 @@ class CategoryController extends Controller
     {
         try {
             $category->delete();
-            return $this->helper()->response(__('response.deleted'), CategoryResource::make($category));
+            return $this->helper()->response(
+                Message::DELETED(),
+                CategoryResource::make($category)
+            );
         }
         catch (\Exception $exception){
             return 'hello';
@@ -104,7 +112,10 @@ class CategoryController extends Controller
     {
         try {
             $category = CategoryResource::make($category);
-            return $this->helper()->response(__('response.fetch_successfully'),$category);
+            return $this->helper()->response(
+                Message::FETCH(),
+                $category
+            );
         }
         catch (\Exception $exception){
 //            return 'hello';
