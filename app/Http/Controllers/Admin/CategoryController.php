@@ -118,7 +118,7 @@ class CategoryController extends Controller
             );
         }
         catch (\Exception $exception){
-//            return 'hello';
+            return $exception->getMessage();
         }
     }
 
