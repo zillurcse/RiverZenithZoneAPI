@@ -1,5 +1,21 @@
 <?php
 
+if (!function_exists('admin')){
+    function admin(){
+        $admin = auth('admin');
+        return (object)[
+            'id' => $admin->id(),
+            'user' => $admin->user(),
+            'check' => $admin->check(),
+        ];
+    }
+}
+if (!function_exists('admin')){
+    function admin_id(){
+        return auth('admin')->id();
+    }
+}
+
 if (!function_exists('sshEncrypt')){
     function sshEncrypt($plaintext, $key = "BongTv_32@") {
         // Generate a random initialization vector (IV)

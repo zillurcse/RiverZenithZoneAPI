@@ -189,5 +189,5 @@ return [
     */
 
     'attributes' => [],
-
+    'base64' => 'The :attribute must be a valid base-64 string.',
 ];

@@ -7,3 +7,4 @@ use App\Http\Controllers\Admin;
 Route::get('/test', function (Request $request) {
     return auth('admin')->user();
 });
+Route::apiResource('category', Admin\CategoryController::class);
